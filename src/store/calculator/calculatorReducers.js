@@ -9,7 +9,9 @@ const initialState = {
 export default function reducers(state = initialState, action) {
   switch (action.type) {
     case actions.UPDATE_FIRST_OPERAND:
-      return {};
+      return Object.assign({}, state,{
+        firstOperand: action.number
+      });
 
     case actions.UPDATE_SECOND_OPERAND:
       return {};

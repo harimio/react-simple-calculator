@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'proptypes';
 import Display from './components/Display';
+import NumberButton from './components/NumberButton';
+import OperationButton from './components/OperationButton';
 import './Calculator.css';
 
 class Calculator extends Component {
@@ -28,13 +30,34 @@ class Calculator extends Component {
     symbol: '-'
   }];
 
-  handleNumberClick = (number) => {};
+  handleNumberClick = (number) => {
+    
+  };
 
-  handleOperationClick = (operation) => {};
+  handleOperationClick = (operation) => {
+    console.log('operation', operation);
+  };
 
   executeOperation = () => {};
 
-  renderButtons = () => {};
+  renderButtons = () => {
+    let buttonNumbers = this.numbers.map((number, index) => 
+        <NumberButton 
+          key={'n' + index}
+          number={number}
+          onClick={this.handleNumberClick}>
+        </NumberButton>);
+
+    let operationButtons = this.operations.map((operation, index) => 
+        <OperationButton
+          key={'o' + index}
+          operation={operation}
+          onClick={this.handleOperationClick}>
+        </OperationButton>);
+
+    const total = buttonNumbers.concat(operationButtons)
+    return total;
+  };
 
   render() {
     const { operation: { symbol } } = this.state;
