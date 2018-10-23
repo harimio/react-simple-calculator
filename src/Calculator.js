@@ -14,7 +14,7 @@ class Calculator extends Component {
     }
   };
 
-  numbers = [7, 8, 9, 4, 5, 6, 1, 2, 3];
+  numbers = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0];
 
   operations = [{
     name: 'division',
@@ -31,41 +31,80 @@ class Calculator extends Component {
   }];
 
   handleNumberClick = (number) => {
-    
+    if (!this.state.operation.isSelected) {
+      this.props.onUpdateFirstOperand(number);
+    } else {
+      this.props.onUpdateSecondOperand(number);
+    }
   };
 
   handleOperationClick = (operation) => {
-    console.log('operation', operation);
+    if (!this.state.operation.isSelected) {
+      operation.isSelected = true;
+      this.setState((state) => {
+        return {
+          operation: operation
+        }
+      });
+      this.props.onUpdateOperator(operation.symbol);
+    }
   };
 
-  executeOperation = () => {};
+  executeOperation = () => {
+    if (this.state.operation.isSelected) {
+      this.props.onExecuteOperation(this.state.operation.name);
+      this.setState((state) => {
+        return {
+          operation: { isSelected: false }
+        }
+      });
+    }
+  };
+
+  clearData = () => {
+    this.props.onExecuteOperation('clear');
+    this.setState((state) => {
+      return {
+        operation: { isSelected: false }
+      }
+    });
+  };
 
   renderButtons = () => {
-    let buttonNumbers = this.numbers.map((number, index) => 
-        <NumberButton 
-          key={'n' + index}
-          number={number}
-          onClick={this.handleNumberClick}>
-        </NumberButton>);
+    let buttonNumbers = this.numbers.map((number, index) =>
+      <NumberButton
+        key={'n' + index}
+        number={number}
+        onClick={this.handleNumberClick}>
+      </NumberButton>);
 
-    let operationButtons = this.operations.map((operation, index) => 
-        <OperationButton
-          key={'o' + index}
-          operation={operation}
-          onClick={this.handleOperationClick}>
-        </OperationButton>);
+    let operationButtons = this.operations.map((operation, index) =>
+      <OperationButton
+        key={'o' + index}
+        operation={operation}
+        onClick={this.handleOperationClick}>
+      </OperationButton>);
 
-    const total = buttonNumbers.concat(operationButtons)
-    return total;
+    return (
+      <div className="container">
+        <div className="container container-numbers">
+          { buttonNumbers }
+          <div className="button button-red" onClick={this.clearData}>C</div>
+          <div className="button button-blue" onClick={this.executeOperation}>=</div>
+        </div>
+        <div className="container container-operators">
+          {operationButtons}
+        </div>
+      </div>
+    );
   };
 
   render() {
-    const { operation: { symbol } } = this.state;
     const { display } = this.props;
 
     return (
       <div className="calculator">
-        <Display value={`${display} ${symbol}`} />
+        <Display value={display}  />
         { this.renderButtons() }
       </div>
     );
@@ -73,8 +112,9 @@ class Calculator extends Component {
 }
 
 Calculator.propTypes = {
-  display: PropTypes.number.isRequired,
+  display: PropTypes.string.isRequired,
   onUpdateFirstOperand: PropTypes.func.isRequired,
+  onUpdateOperator: PropTypes.func.isRequired,
   onUpdateSecondOperand: PropTypes.func.isRequired,
   onReset: PropTypes.func.isRequired,
   onExecuteOperation: PropTypes.func.isRequired

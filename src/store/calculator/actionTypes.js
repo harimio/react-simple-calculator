@@ -1,4 +1,5 @@
 export const UPDATE_FIRST_OPERAND = '@calculator/update-first-operand';
+export const UPDATE_OPERATOR = '@calculator/update-operator';
 export const UPDATE_SECOND_OPERAND = '@calculator/update-second-operator';
 export const EXECUTE_DIVISION = '@calculator/division';
 export const EXECUTE_MULTIPLICATION = '@calculator/multiplication';

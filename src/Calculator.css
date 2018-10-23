@@ -1,5 +1,27 @@
 .calculator {
   margin: 100px auto;
-  height: 345px;
   width: 300px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.container-numbers {
+  flex-wrap: wrap;
+  width: 75%;
+}
+
+.container-operators {
+  flex-direction: column;
+  width: 25%;
+}
+
+.button-red {
+  color: red;
+}
+
+.button-blue {
+  color: blue;
 }

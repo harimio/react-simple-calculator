@@ -7,6 +7,13 @@ export function updateFirstOperand(number) {
   };
 }
 
+export function updateOperator(operator) {
+  return {
+    type: actions.UPDATE_OPERATOR,
+    operator
+  };
+}
+
 export function updateSecondOperand(number) {
   return {
     type: actions.UPDATE_SECOND_OPERAND,
