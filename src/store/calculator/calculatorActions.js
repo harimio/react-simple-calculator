@@ -7,10 +7,10 @@ export function updateFirstOperand(number) {
   };
 }
 
-export function updateOperator(operator) {
+export function updateOperator(operation) {
   return {
     type: actions.UPDATE_OPERATOR,
-    operator
+    operation
   };
 }
 

@@ -1,98 +1,67 @@
 import * as actions from './actionTypes';
 
+// Initial state and data structure of the app.
 const initialState = {
-  display: '',
-  operator: '',
-  firstOperand: 0,
-  secondOperand: null
+  numbers: [7, 8, 9, 4, 5, 6, 1, 2, 3, 0],
+  operations: [{
+    name: 'division',
+    symbol: '÷'
+  }, {
+    name: 'multiplication',
+    symbol: 'x'
+  }, {
+    name: 'addition',
+    symbol: '+'
+  }, {
+    name: 'subtraction',
+    symbol: '-'
+  }],
+  firstOperand: null,
+  secondOperand: null,
+  currentOperation: null,
+  operationSelected: false,
+  result: null
 };
 
-let result;
+let result = null;
 
 export default function reducers(state = initialState, action) {
   switch (action.type) {
     case actions.UPDATE_FIRST_OPERAND:
-      let newFirstOperand = state.firstOperand
-        ? Number(String(state.firstOperand) + String(action.number))
-        : Number(action.number);
-
-      const newFirstObject = {
-        firstOperand: (String(newFirstOperand).length >= 7 ? 0 : newFirstOperand),
-        display: (String(newFirstOperand).length >= 7 ? 'To Large' : String(newFirstOperand)),
-      }
-      return Object.assign({}, state, newFirstObject);
+      return Object.assign({}, state, { firstOperand: action.number });
 
     case actions.UPDATE_SECOND_OPERAND:
-      let newSecondOperand = state.secondOperand
-        ? Number(String(state.secondOperand) + String(action.number))
-        : Number(action.number);
-      const newSecondObject = {
-        firstOperand: (String(newSecondOperand).length >= 7 ? 0 : state.firstOperand),
-        operator: (String(newSecondOperand).length >= 7 ? '' : state.operator),
-        secondOperand: (String(newSecondOperand).length >= 7 ? null : newSecondOperand),
-        display: (String(newSecondOperand).length >= 7
-          ? 'To Large'
-          : state.firstOperand + ' ' + state.operator + ' ' + newSecondOperand),
-      }
-      return Object.assign({}, state, newSecondObject);
-    
+      return Object.assign({}, state, { secondOperand: action.number });
+
     case actions.UPDATE_OPERATOR:
-      if (!state.secondOperand) {
-        return Object.assign({}, state,{
-          operator: action.operator,
-          display: state.firstOperand + ' ' + action.operator
-        });
-      } else {
-        return state;
-      }
+      return Object.assign({}, state, {
+        currentOperation: action.operation,
+        operationSelected: true
+      });
 
     case actions.EXECUTE_DIVISION:
-      result = state.firstOperand / (state.secondOperand || 0);
-      result = String(result.toFixed(2));
-
-      return Object.assign({}, state,{
-        operator: '',
-        firstOperand: 0,
-        secondOperand: null,
-        display: '= ' + (result.length >= 6 ? 'To Large' : result)
-      });
+      result = state.firstOperand / state.secondOperand;
+      return Object.assign({}, state, { result });
 
     case actions.EXECUTE_MULTIPLICATION:
-      result = state.firstOperand * (state.secondOperand || 0);
-
-      return Object.assign({}, state,{
-        operator: '',
-        firstOperand: 0,
-        secondOperand: null,
-        display: '= ' + (String(result).length >= 6 ? 'To Large' : String(result))
-      });
+      result = state.firstOperand * state.secondOperand;
+      return Object.assign({}, state, { result });
 
     case actions.EXECUTE_ADDITION:
-      result = state.firstOperand + (state.secondOperand || 0);
-
-      return Object.assign({}, state,{
-        operator: '',
-        firstOperand: 0,
-        secondOperand: null,
-        display: '= ' + result
-      });
+      result = state.firstOperand + state.secondOperand;
+      return Object.assign({}, state, { result });
 
     case actions.EXECUTE_SUBTRACTION:
-      result = state.firstOperand - (state.secondOperand || 0);
-
-      return Object.assign({}, state,{
-        operator: '',
-        firstOperand: 0,
-        secondOperand: null,
-        display: '= ' + result
-      });
+      result = state.firstOperand - state.secondOperand;
+      return Object.assign({}, state, { result });
 
     case actions.RESET:
-      return Object.assign({}, state,{
-        operator: '',
-        firstOperand: 0,
+      return Object.assign({}, state, {
+        firstOperand: null,
         secondOperand: null,
-        display: ''
+        currentOperation: null,
+        operationSelected: false,
+        result: null
       });
 
     default:

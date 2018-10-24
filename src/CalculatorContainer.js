@@ -9,23 +9,20 @@ import {  updateFirstOperand,
           executeSubtraction,
           reset } from './store/calculator/calculatorActions';
 
-
 const mapStateToProps = (state) => ({
-  display: state.display,
+  numbers: state.numbers,
+  operations: state.operations,
   firstOperand: state.firstOperand,
-  secondOperand: state.secondOperand
+  secondOperand: state.secondOperand,
+  currentOperation: state.currentOperation,
+  operationSelected: state.operationSelected,
+  result: state.result
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onUpdateFirstOperand: (number) => {    
-    dispatch(updateFirstOperand(number));
-  },
-  onUpdateOperator: (operator) => {    
-    dispatch(updateOperator(operator));
-  },
-  onUpdateSecondOperand: (number) => {
-    dispatch(updateSecondOperand(number));
-  },
+  onUpdateFirstOperand: (number) => dispatch(updateFirstOperand(number)),
+  onUpdateSecondOperand: (number) => dispatch(updateSecondOperand(number)),
+  onUpdateOperator: (operation) => dispatch(updateOperator(operation)),
   onExecuteOperation: (operation) => {
     const action = {
       'division': executeDivision(operation),
@@ -34,11 +31,9 @@ const mapDispatchToProps = (dispatch) => ({
       'subtraction': executeSubtraction(operation),
       'clear': reset()
     };
-
-    dispatch(action[operation]);
-    
+    dispatch(action[operation.name]);
   },
-  onReset: () => {},
+  onReset: () => dispatch(reset())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calculator);

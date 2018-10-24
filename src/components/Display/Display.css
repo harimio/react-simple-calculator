@@ -1,9 +1,13 @@
 .display {
   background: #4c4c4c;
-  height: 60px;
-  overflow-x: auto;
-  padding: 40px 5px 0px 0px;
+  height: 90px;
   color: #CCCCCC;
   text-align: right;
   font-size: 50px;
+  overflow-x: auto;
+  padding: 10px 10px;
+}
+
+.display-upper {
+  font-size: 25px;
 }
